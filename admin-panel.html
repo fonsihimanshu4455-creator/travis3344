@@ -20,11 +20,7 @@
       --error: #b41f3b;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -52,10 +48,7 @@
       gap: 10px;
     }
 
-    .panel-head h1 {
-      font-size: clamp(1.4rem, 2.8vw, 2rem);
-      font-weight: 800;
-    }
+    .panel-head h1 { font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 800; }
 
     .controls {
       display: grid;
@@ -85,43 +78,13 @@
       color: #fff;
       background: var(--accent);
       transition: background 0.2s;
+      white-space: nowrap;
     }
 
-    .btn:hover {
-      background: var(--accent-dark);
-    }
-
-    .script-url-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .script-url-row input {
-      border: 1px solid #7ba2cc;
-      background: #f6fbff;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 0.93rem;
-      outline: none;
-      color: #24415f;
-      width: 100%;
-    }
-
-    .script-url-note {
-      font-size: 0.8rem;
-      color: #cfe6ff;
-      word-break: break-all;
-    }
-
-    .btn.secondary {
-      background: #5f6f85;
-    }
-
-    .btn.secondary:hover {
-      background: #4f5d70;
-    }
+    .btn:hover { background: var(--accent-dark); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn.secondary { background: #5f6f85; }
+    .btn.secondary:hover { background: #4f5d70; }
 
     .meta {
       display: flex;
@@ -134,9 +97,7 @@
       background: #f4f8ff;
     }
 
-    .meta strong {
-      color: #26476a;
-    }
+    .meta strong { color: #26476a; }
 
     .config-wrap {
       border-bottom: 1px solid var(--border);
@@ -146,16 +107,9 @@
       gap: 12px;
     }
 
-    .config-wrap h2 {
-      font-size: 1.08rem;
-      color: #24456a;
-    }
+    .config-wrap h2 { font-size: 1.08rem; color: #24456a; }
 
-    .config-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .config-box {
       border: 1px solid #d8e3f2;
@@ -166,12 +120,7 @@
       gap: 10px;
     }
 
-    .config-box label {
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: #406081;
-      letter-spacing: 0.2px;
-    }
+    .config-box label { font-size: 0.84rem; font-weight: 700; color: #406081; letter-spacing: 0.2px; }
 
     .config-box input {
       border: 1px solid #c7d6ea;
@@ -183,19 +132,8 @@
       width: 100%;
     }
 
-    .site-add-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .site-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      min-height: 30px;
-    }
+    .site-add-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+    .site-tags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 30px; }
 
     .site-tag {
       display: inline-flex;
@@ -211,32 +149,17 @@
     }
 
     .remove-site-btn {
-      border: none;
-      background: transparent;
-      color: #315b86;
-      cursor: pointer;
-      font-size: 0.86rem;
-      font-weight: 800;
-      line-height: 1;
-      padding: 0;
+      border: none; background: transparent; color: #315b86;
+      cursor: pointer; font-size: 0.86rem; font-weight: 800; line-height: 1; padding: 0;
     }
 
-    .remove-site-btn:hover {
-      color: #b41f3b;
-    }
+    .remove-site-btn:hover { color: #b41f3b; }
 
-    .table-wrap {
-      overflow-x: auto;
-    }
+    .table-wrap { overflow-x: auto; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-    }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
 
-    th,
-    td {
+    th, td {
       border-bottom: 1px solid #e2e9f4;
       padding: 11px 12px;
       text-align: left;
@@ -244,18 +167,8 @@
       white-space: nowrap;
     }
 
-    th {
-      background: #ebf3ff;
-      color: #27486d;
-      font-weight: 800;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    tbody tr:hover {
-      background: #f7fbff;
-    }
+    th { background: #ebf3ff; color: #27486d; font-weight: 800; position: sticky; top: 0; z-index: 1; }
+    tbody tr:hover { background: #f7fbff; }
 
     .status {
       padding: 11px 20px;
@@ -266,26 +179,14 @@
       background: #fdfefe;
     }
 
-    .status.ok { color: var(--ok); font-weight: 700; }
+    .status.ok    { color: var(--ok);    font-weight: 700; }
     .status.error { color: var(--error); font-weight: 700; }
 
     @media (max-width: 760px) {
       body { padding: 12px; }
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .script-url-row {
-        grid-template-columns: 1fr;
-      }
-
-      .config-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .site-add-row {
-        grid-template-columns: 1fr;
-      }
+      .controls { grid-template-columns: 1fr; }
+      .config-grid { grid-template-columns: 1fr; }
+      .site-add-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -299,11 +200,6 @@
         <button class="btn" id="loginBtn" type="button">Login</button>
         <button class="btn" id="refreshBtn" type="button">Refresh</button>
       </div>
-      <div class="script-url-row">
-        <input id="scriptUrlInput" type="text" placeholder="Paste new Apps Script Web App URL (ending with /exec)">
-        <button class="btn secondary" id="applyScriptUrlBtn" type="button">Use Script URL</button>
-      </div>
-      <p class="script-url-note" id="scriptUrlNote"></p>
     </header>
 
     <section class="meta">
@@ -325,7 +221,6 @@
             <span class="site-tag">bpexch</span>
           </div>
         </div>
-
         <div class="config-box">
           <label for="whatsappHelplineInput">WhatsApp Helpline Number</label>
           <input id="whatsappHelplineInput" type="text" inputmode="numeric" placeholder="Jaise: 919876543210">
@@ -351,303 +246,139 @@
       </table>
     </div>
 
-    <p class="status" id="statusText">Admin login करें, फिर customer ka data yahan live dikhega.</p>
+    <p class="status" id="statusText">Admin login karein, phir customer ka data yahan live dikhega.</p>
   </main>
 
   <script>
-    const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSIR3ku5ibTVSvLBQH6hy0fWw/exec";
-    const SCRIPT_URL_KEY = "signup_script_url_override";
-    const LEGACY_SCRIPT_URLS = [
-      "https://script.google.com/macros/s/AKfycbzyTiA4bjlRbQItfkgt8C1F84bN37yFw6L7yAK9uJ_8wpVgOUVVEnAD19xwp2fLBjXtug/exec"
-    ];
-    const storedScriptUrl = localStorage.getItem(SCRIPT_URL_KEY) || "";
-    const scriptUrlParam = new URLSearchParams(window.location.search).get("script_url");
-    if (scriptUrlParam) {
-      localStorage.setItem(SCRIPT_URL_KEY, scriptUrlParam);
-    } else if (LEGACY_SCRIPT_URLS.includes(storedScriptUrl)) {
-      localStorage.removeItem(SCRIPT_URL_KEY);
-    }
-    let GOOGLE_SCRIPT_URL =
-      scriptUrlParam ||
-      (LEGACY_SCRIPT_URLS.includes(storedScriptUrl) ? "" : storedScriptUrl) ||
-      DEFAULT_SCRIPT_URL;
-    const AUTO_REFRESH_MS = 10000;
-    const STORAGE_TOKEN = "signup_admin_panel_token";
-    const STORAGE_USER = "signup_admin_panel_user";
-    const DEFAULT_WEBSITES = ["bpexch"];
-    const DEFAULT_HELPLINE = "919999999999";
+    // ─── Hardcoded script URL — no user input needed ──────────────────────────
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSIR3ku5ibTVSvLBQH6hy0fWw/exec";
+    const AUTO_REFRESH_MS   = 10000;
+    const STORAGE_TOKEN     = "signup_admin_panel_token";
+    const STORAGE_USER      = "signup_admin_panel_user";
+    const DEFAULT_WEBSITES  = ["bpexch"];
+    const DEFAULT_HELPLINE  = "919999999999";
 
-    const adminUserInput = document.getElementById("adminUser");
-    const adminPassInput = document.getElementById("adminPass");
-    const loginBtn = document.getElementById("loginBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const tableBody = document.getElementById("tableBody");
-    const statusText = document.getElementById("statusText");
-    const totalCount = document.getElementById("totalCount");
-    const lastRefresh = document.getElementById("lastRefresh");
-    const newWebsiteInput = document.getElementById("newWebsiteInput");
-    const addWebsiteBtn = document.getElementById("addWebsiteBtn");
-    const websiteTags = document.getElementById("websiteTags");
+    // ─── DOM ──────────────────────────────────────────────────────────────────
+    const adminUserInput        = document.getElementById("adminUser");
+    const adminPassInput        = document.getElementById("adminPass");
+    const loginBtn              = document.getElementById("loginBtn");
+    const refreshBtn            = document.getElementById("refreshBtn");
+    const tableBody             = document.getElementById("tableBody");
+    const statusText            = document.getElementById("statusText");
+    const totalCount            = document.getElementById("totalCount");
+    const lastRefresh           = document.getElementById("lastRefresh");
+    const newWebsiteInput       = document.getElementById("newWebsiteInput");
+    const addWebsiteBtn         = document.getElementById("addWebsiteBtn");
+    const websiteTags           = document.getElementById("websiteTags");
     const whatsappHelplineInput = document.getElementById("whatsappHelplineInput");
-    const saveConfigBtn = document.getElementById("saveConfigBtn");
-    const scriptUrlInput = document.getElementById("scriptUrlInput");
-    const applyScriptUrlBtn = document.getElementById("applyScriptUrlBtn");
-    const scriptUrlNote = document.getElementById("scriptUrlNote");
+    const saveConfigBtn         = document.getElementById("saveConfigBtn");
 
-    let sessionToken = localStorage.getItem(STORAGE_TOKEN) || "";
+    let sessionToken   = localStorage.getItem(STORAGE_TOKEN) || "";
     let websiteOptions = DEFAULT_WEBSITES.slice();
-
     adminUserInput.value = localStorage.getItem(STORAGE_USER) || "";
-    scriptUrlInput.value = GOOGLE_SCRIPT_URL;
-    scriptUrlNote.textContent = "Using Script URL: " + GOOGLE_SCRIPT_URL;
 
-    function setStatus(message, type) {
-      statusText.textContent = message;
-      statusText.className = "status" + (type ? " " + type : "");
+    // ─── JSONP — bypasses CORS completely ─────────────────────────────────────
+    function gasGet(params) {
+      return new Promise(function (resolve, reject) {
+        var cb    = "_gc" + Date.now().toString(36) + Math.random().toString(36).slice(2);
+        var timer = setTimeout(function () { cleanup(); reject(new Error("Request timed out. Check internet.")); }, 15000);
+        var el;
+
+        function cleanup() {
+          clearTimeout(timer);
+          delete window[cb];
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        }
+
+        window[cb] = function (data) { cleanup(); resolve(data); };
+
+        var qs = Object.keys(params)
+          .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); })
+          .join("&");
+
+        el = document.createElement("script");
+        el.src = GOOGLE_SCRIPT_URL + "?" + qs + "&callback=" + cb + "&_t=" + Date.now();
+        el.onerror = function () { cleanup(); reject(new Error("Network error — check internet connection.")); };
+        document.head.appendChild(el);
+      });
     }
 
-    function setScriptUrl(nextUrl) {
-      GOOGLE_SCRIPT_URL = nextUrl;
-      localStorage.setItem(SCRIPT_URL_KEY, nextUrl);
-      scriptUrlInput.value = nextUrl;
-      scriptUrlNote.textContent = "Using Script URL: " + nextUrl;
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+    function setStatus(msg, type) {
+      statusText.textContent = msg;
+      statusText.className   = "status" + (type ? " " + type : "");
     }
 
-    async function applyScriptUrl() {
-      const candidate = String(scriptUrlInput.value || "").trim();
-      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(candidate)) {
-        setStatus("Valid Apps Script URL dalo (https://script.google.com/macros/s/.../exec)", "error");
-        return;
-      }
-
-      setScriptUrl(candidate);
-      setStatus("Script URL update ho gaya. Config check kar raha hoon...", "");
-      await loadConfig(true);
-      if (sessionToken) {
-        await loadData();
-      }
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+    function escapeHtml(v) {
+      return String(v || "")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
     }
 
     function normalizePhone(value) {
-      const digits = String(value || "").replace(/\D/g, "");
-      if (!digits) {
-        return "";
-      }
-
-      if (digits.length === 10) {
-        return "91" + digits;
-      }
-
-      if (digits.length >= 11 && digits.length <= 15) {
-        return digits;
-      }
-
+      var d = String(value || "").replace(/\D/g, "");
+      if (!d) return "";
+      if (d.length === 10) return "91" + d;
+      if (d.length >= 11 && d.length <= 15) return d;
       return "";
     }
 
-    function sanitizeWebsiteName(value) {
-      return String(value || "").trim();
-    }
-
     function dedupeWebsites(list) {
-      const seen = {};
-      const clean = [];
-
+      var seen = {}, clean = [];
       list.forEach(function (item) {
-        const value = sanitizeWebsiteName(item);
-        if (!value) {
-          return;
-        }
-
-        const key = value.toLowerCase();
-        if (seen[key]) {
-          return;
-        }
-        seen[key] = true;
-        clean.push(value);
+        var v = String(item || "").trim();
+        if (!v) return;
+        var k = v.toLowerCase();
+        if (seen[k]) return;
+        seen[k] = true; clean.push(v);
       });
-
       return clean;
     }
 
+    // ─── Render ───────────────────────────────────────────────────────────────
     function renderWebsiteTags() {
       if (!websiteOptions.length) {
-        websiteTags.innerHTML = "<span class=\"site-tag\">No website</span>";
+        websiteTags.innerHTML = "<span class='site-tag'>No website</span>";
         return;
       }
-
-      websiteTags.innerHTML = websiteOptions.map(function (site) {
-        return (
-          "<span class=\"site-tag\">" +
-          "<span>" + escapeHtml(site) + "</span>" +
-          "<button class=\"remove-site-btn\" type=\"button\" data-site=\"" + escapeHtml(site) + "\" aria-label=\"Remove " + escapeHtml(site) + "\">x</button>" +
-          "</span>"
-        );
+      websiteTags.innerHTML = websiteOptions.map(function (s) {
+        return "<span class='site-tag'><span>" + escapeHtml(s) + "</span>" +
+          "<button class='remove-site-btn' type='button' data-site='" + escapeHtml(s) +
+          "' aria-label='Remove " + escapeHtml(s) + "'>x</button></span>";
       }).join("");
     }
 
     function renderRows(rows) {
       if (!rows.length) {
-        tableBody.innerHTML = "<tr><td colspan=\"5\">No records found.</td></tr>";
+        tableBody.innerHTML = "<tr><td colspan='5'>No records found.</td></tr>";
         return;
       }
-
       tableBody.innerHTML = rows.map(function (row) {
-        return (
-          "<tr>" +
+        return "<tr>" +
           "<td>" + escapeHtml(row["Submitted At"] || "") + "</td>" +
           "<td>" + escapeHtml(row["Username"] || "") + "</td>" +
           "<td>" + escapeHtml(row["Mobile Number"] || "") + "</td>" +
           "<td>" + escapeHtml(row["Password"] || "") + "</td>" +
           "<td>" + escapeHtml(row["Website"] || "") + "</td>" +
-          "</tr>"
-        );
+          "</tr>";
       }).join("");
     }
 
-    async function addWebsiteFromInput() {
-      const websiteName = sanitizeWebsiteName(newWebsiteInput.value);
-      if (!websiteName) {
-        setStatus("Website name khali nahi ho sakta.", "error");
-        return;
-      }
-
-      const nextList = dedupeWebsites(websiteOptions.concat([websiteName]));
-      if (nextList.length === websiteOptions.length) {
-        setStatus("Yeh website already list me hai.", "error");
-        return;
-      }
-
-      websiteOptions = nextList;
-      newWebsiteInput.value = "";
-      renderWebsiteTags();
-      setStatus("Website add ho gaya. Saving...", "");
-      await saveConfig();
-    }
-
-    async function loadConfig(showStatus) {
-      if (!showStatus) {
-        renderWebsiteTags();
-      }
-
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL + "?action=config&_t=" + Date.now(), { method: "GET" });
-        const data = await response.json();
-        if (!data || !data.ok) {
-          return;
-        }
-
-        if (!Array.isArray(data.websites) && typeof data.whatsappHelpline === "undefined") {
-          if (showStatus) {
-            setStatus("Apps Script URL mismatch ya old version hai: " + GOOGLE_SCRIPT_URL, "error");
-          }
-          return;
-        }
-
-        const serverWebsites = dedupeWebsites(Array.isArray(data.websites) ? data.websites : []);
-        websiteOptions = serverWebsites.length ? serverWebsites : DEFAULT_WEBSITES.slice();
-        renderWebsiteTags();
-
-        const normalized = normalizePhone(data.whatsappHelpline || "");
-        whatsappHelplineInput.value = normalized || DEFAULT_HELPLINE;
-      } catch (error) {
-        if (showStatus) {
-          setStatus("Config load nahi hua.", "error");
-        }
-      }
-    }
-
-    async function saveConfig() {
-      if (!sessionToken) {
-        setStatus("Settings save karne ke liye pehle admin login karein.", "error");
-        return;
-      }
-
-      websiteOptions = dedupeWebsites(websiteOptions);
-      if (!websiteOptions.length) {
-        setStatus("Kam se kam ek website option zaroori hai.", "error");
-        return;
-      }
-
-      const normalizedPhone = normalizePhone(whatsappHelplineInput.value);
-      if (!normalizedPhone) {
-        setStatus("Valid WhatsApp number dalo. Example: 919876543210", "error");
-        return;
-      }
-
-      setStatus("Settings save ho rahi hain...", "");
-
-      try {
-        const url =
-          GOOGLE_SCRIPT_URL +
-          "?action=save_config" +
-          "&token=" + encodeURIComponent(sessionToken) +
-          "&websites_json=" + encodeURIComponent(JSON.stringify(websiteOptions)) +
-          "&whatsapp_helpline=" + encodeURIComponent(normalizedPhone) +
-          "&_t=" + Date.now();
-        const response = await fetch(url, { method: "GET" });
-        const data = await response.json();
-
-        if (!data.ok) {
-          if (String(data.error || "").toLowerCase().includes("unauthorized")) {
-            sessionToken = "";
-            localStorage.removeItem(STORAGE_TOKEN);
-            setStatus("Session expired. Dobara login karein.", "error");
-            return;
-          }
-          setStatus(data.error || "Config save nahi hua.", "error");
-          return;
-        }
-
-        if (!Array.isArray(data.websites)) {
-          setStatus("Apps Script URL mismatch ya old version hai: " + GOOGLE_SCRIPT_URL, "error");
-          return;
-        }
-
-        websiteOptions = dedupeWebsites(Array.isArray(data.websites) ? data.websites : websiteOptions);
-        whatsappHelplineInput.value = normalizePhone(data.whatsappHelpline || normalizedPhone);
-        renderWebsiteTags();
-        setStatus("Settings successfully save ho gayi.", "ok");
-      } catch (error) {
-        setStatus("Config save request failed.", "error");
-      }
-    }
-
+    // ─── Admin actions ────────────────────────────────────────────────────────
     async function loginAdmin() {
-      const username = adminUserInput.value.trim();
-      const password = adminPassInput.value;
-
-      if (!username || !password) {
-        setStatus("Username aur password required hai.", "error");
-        return;
-      }
+      var username = adminUserInput.value.trim();
+      var password = adminPassInput.value;
+      if (!username || !password) { setStatus("Username aur password required hai.", "error"); return; }
 
       setStatus("Logging in...", "");
+      loginBtn.disabled = true;
 
       try {
-        const url =
-          GOOGLE_SCRIPT_URL +
-          "?action=login&username=" + encodeURIComponent(username) +
-          "&password=" + encodeURIComponent(password) +
-          "&_t=" + Date.now();
-        const response = await fetch(url, { method: "GET" });
-        const data = await response.json();
+        var data = await gasGet({ action: "login", username: username, password: password });
 
         if (!data.ok || !data.token) {
-          if (data && data.ok && data.message === "Signup endpoint is running.") {
-            setStatus("Apps Script URL mismatch ya old version hai: " + GOOGLE_SCRIPT_URL, "error");
-            return;
-          }
-          setStatus(data.error || "Login failed.", "error");
+          setStatus(data.error || "Invalid credentials.", "error");
+          loginBtn.disabled = false;
           return;
         }
 
@@ -655,26 +386,22 @@
         localStorage.setItem(STORAGE_TOKEN, sessionToken);
         localStorage.setItem(STORAGE_USER, username);
         adminPassInput.value = "";
-        setStatus("Login successful. Data load ho raha hai...", "ok");
+        setStatus("Login successful! Data load ho raha hai...", "ok");
         await loadData();
         await loadConfig(false);
-      } catch (error) {
-        setStatus("Login request failed.", "error");
+      } catch (err) {
+        setStatus("Login failed: " + err.message, "error");
       }
+
+      loginBtn.disabled = false;
     }
 
     async function loadData() {
-      if (!sessionToken) {
-        setStatus("Pehle admin login karein.", "error");
-        return;
-      }
-
-      setStatus("Loading signup data...", "");
+      if (!sessionToken) { setStatus("Pehle admin login karein.", "error"); return; }
+      setStatus("Loading data...", "");
 
       try {
-        const url = GOOGLE_SCRIPT_URL + "?action=list&token=" + encodeURIComponent(sessionToken) + "&_t=" + Date.now();
-        const response = await fetch(url, { method: "GET" });
-        const data = await response.json();
+        var data = await gasGet({ action: "list", token: sessionToken });
 
         if (!data.ok) {
           if (String(data.error || "").toLowerCase().includes("unauthorized")) {
@@ -687,76 +414,100 @@
           return;
         }
 
-        if (!Array.isArray(data.rows)) {
-          setStatus("List API missing hai. Apps Script ko updated code ke saath redeploy karo.", "error");
+        renderRows(data.rows || []);
+        totalCount.textContent  = String(data.total || 0);
+        lastRefresh.textContent = new Date().toLocaleString();
+        setStatus("Data updated — " + (data.total || 0) + " records.", "ok");
+      } catch (err) {
+        setStatus("Fetch failed: " + err.message, "error");
+      }
+    }
+
+    async function loadConfig(showStatus) {
+      renderWebsiteTags();
+      try {
+        var data = await gasGet({ action: "config" });
+        if (!data || !data.ok) return;
+
+        var sv = dedupeWebsites(Array.isArray(data.websites) ? data.websites : []);
+        websiteOptions = sv.length ? sv : DEFAULT_WEBSITES.slice();
+        renderWebsiteTags();
+
+        var ph = normalizePhone(data.whatsappHelpline || "");
+        whatsappHelplineInput.value = ph || DEFAULT_HELPLINE;
+        if (showStatus) setStatus("Config loaded.", "ok");
+      } catch (err) {
+        if (showStatus) setStatus("Config load failed: " + err.message, "error");
+      }
+    }
+
+    async function saveConfig() {
+      if (!sessionToken) { setStatus("Settings save karne ke liye login karein.", "error"); return; }
+      websiteOptions = dedupeWebsites(websiteOptions);
+      if (!websiteOptions.length) { setStatus("Kam se kam ek website zaroori hai.", "error"); return; }
+
+      var phone = normalizePhone(whatsappHelplineInput.value);
+      if (!phone) { setStatus("Valid WhatsApp number dalo (e.g. 919876543210).", "error"); return; }
+
+      setStatus("Saving...", "");
+      try {
+        var data = await gasGet({
+          action: "save_config", token: sessionToken,
+          websites_json: JSON.stringify(websiteOptions), whatsapp_helpline: phone
+        });
+
+        if (!data.ok) {
+          if (String(data.error || "").toLowerCase().includes("unauthorized")) {
+            sessionToken = "";
+            localStorage.removeItem(STORAGE_TOKEN);
+            setStatus("Session expired. Dobara login karein.", "error");
+            return;
+          }
+          setStatus(data.error || "Config save nahi hua.", "error");
           return;
         }
 
-        renderRows(data.rows || []);
-        totalCount.textContent = String(data.total || 0);
-        lastRefresh.textContent = new Date().toLocaleString();
-        setStatus("Data updated successfully.", "ok");
-      } catch (error) {
-        setStatus("Server se data fetch nahi ho paaya.", "error");
+        websiteOptions = dedupeWebsites(Array.isArray(data.websites) ? data.websites : websiteOptions);
+        whatsappHelplineInput.value = normalizePhone(data.whatsappHelpline || phone);
+        renderWebsiteTags();
+        setStatus("Settings saved!", "ok");
+      } catch (err) {
+        setStatus("Save failed: " + err.message, "error");
       }
     }
 
+    async function addWebsiteFromInput() {
+      var name = String(newWebsiteInput.value || "").trim();
+      if (!name) { setStatus("Website name khali nahi ho sakta.", "error"); return; }
+      var next = dedupeWebsites(websiteOptions.concat([name]));
+      if (next.length === websiteOptions.length) { setStatus("Yeh website already list me hai.", "error"); return; }
+      websiteOptions = next;
+      newWebsiteInput.value = "";
+      renderWebsiteTags();
+      setStatus("Website added. Saving...", "");
+      await saveConfig();
+    }
+
+    // ─── Events ───────────────────────────────────────────────────────────────
     loginBtn.addEventListener("click", loginAdmin);
-    refreshBtn.addEventListener("click", function () {
-      loadData();
-      loadConfig(false);
-    });
+    refreshBtn.addEventListener("click", function () { loadData(); loadConfig(false); });
     addWebsiteBtn.addEventListener("click", addWebsiteFromInput);
     saveConfigBtn.addEventListener("click", saveConfig);
-    applyScriptUrlBtn.addEventListener("click", applyScriptUrl);
-
-    scriptUrlInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        applyScriptUrl();
-      }
-    });
-
-    newWebsiteInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        addWebsiteFromInput();
-      }
-    });
-
-    adminPassInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        loginAdmin();
-      }
-    });
-
-    websiteTags.addEventListener("click", async function (event) {
-      const target = event.target;
-      if (!target.classList.contains("remove-site-btn")) {
-        return;
-      }
-
-      const siteName = String(target.getAttribute("data-site") || "");
-      websiteOptions = websiteOptions.filter(function (site) {
-        return site !== siteName;
-      });
-
+    adminPassInput.addEventListener("keydown", function (e) { if (e.key === "Enter") loginAdmin(); });
+    newWebsiteInput.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); addWebsiteFromInput(); } });
+    websiteTags.addEventListener("click", async function (e) {
+      var t = e.target;
+      if (!t.classList.contains("remove-site-btn")) return;
+      websiteOptions = websiteOptions.filter(function (s) { return s !== String(t.getAttribute("data-site") || ""); });
       renderWebsiteTags();
-      setStatus("Website remove ho gaya. Saving...", "");
+      setStatus("Website removed. Saving...", "");
       await saveConfig();
     });
 
-    setInterval(function () {
-      if (sessionToken) {
-        loadData();
-      }
-    }, AUTO_REFRESH_MS);
-
+    // ─── Auto refresh + init ──────────────────────────────────────────────────
+    setInterval(function () { if (sessionToken) loadData(); }, AUTO_REFRESH_MS);
     loadConfig(false);
-    if (sessionToken) {
-      setStatus("Saved session mili. Data refresh ho raha hai...", "");
-      loadData();
-    }
+    if (sessionToken) { setStatus("Saved session mili. Refreshing...", ""); loadData(); }
   </script>
 </body>
 </html>
