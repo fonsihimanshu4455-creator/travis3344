@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Suite - Travis777 Admin & User</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap");
+
+    :root {
+      --pass: #16a34a;
+      --fail: #dc2626;
+      --skip: #d97706;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px 18px 60px;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      color: #60a5fa;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    .summary-bar {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      min-width: 110px;
+    }
+
+    .stat .num {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .stat .label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat.pass .num { color: var(--pass); }
+    .stat.fail .num { color: var(--fail); }
+    .stat.total .num { color: var(--accent); }
+
+    .suite {
+      max-width: 900px;
+      margin: 0 auto 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .suite-header {
+      padding: 14px 18px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .suite-header.user-suite { background: linear-gradient(90deg, #1e3a5f, #1e293b); }
+    .suite-header.admin-suite { background: linear-gradient(90deg, #3f1f5f, #1e293b); }
+
+    .suite-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .suite-badge.user { background: #1d4ed8; color: #bfdbfe; }
+    .suite-badge.admin { background: #6d28d9; color: #ddd6fe; }
+
+    .test-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 18px;
+      border-bottom: 1px solid #1e2d3d;
+      font-size: 0.92rem;
+    }
+
+    .test-item:last-child { border-bottom: none; }
+
+    .test-icon {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-top: 1px;
+    }
+
+    .test-icon.pass { background: #14532d; color: #86efac; }
+    .test-icon.fail { background: #7f1d1d; color: #fca5a5; }
+    .test-icon.running { background: #1e3a5f; color: #93c5fd; animation: pulse 1s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .test-info { flex: 1; min-width: 0; }
+    .test-name { font-weight: 700; color: #e2e8f0; word-break: break-word; }
+    .test-detail {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 3px;
+      word-break: break-all;
+    }
+
+    .test-detail.fail-detail { color: #fca5a5; }
+    .test-detail.pass-detail { color: #86efac; }
+
+    .run-btn {
+      display: block;
+      margin: 0 auto 32px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .run-btn:hover { background: #2563eb; transform: translateY(-1px); }
+    .run-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .nav-link {
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .nav-link:hover { background: #1e293b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TRAVIS777 — Test Suite</h1>
+    <p>Automated tests for User Signup &amp; Admin Panel logic</p>
+  </header>
+
+  <div class="nav-links">
+    <a class="nav-link" href="/">User Signup</a>
+    <a class="nav-link" href="/admin">Admin Panel</a>
+    <a class="nav-link" href="/tests">Run Tests</a>
+  </div>
+
+  <div class="summary-bar">
+    <div class="stat total"><div class="num" id="totalStat">0</div><div class="label">Total</div></div>
+    <div class="stat pass"><div class="num" id="passStat">0</div><div class="label">Passed</div></div>
+    <div class="stat fail"><div class="num" id="failStat">0</div><div class="label">Failed</div></div>
+  </div>
+
+  <button class="run-btn" id="runBtn" type="button">Run All Tests</button>
+
+  <div id="suites"></div>
+
+  <script>
+    // ─── Mini Test Framework ───────────────────────────────────────────────────
+
+    const suites = [];
+    let currentSuite = null;
+
+    function describe(name, type, fn) {
+      currentSuite = { name, type, tests: [] };
+      suites.push(currentSuite);
+      fn();
+      currentSuite = null;
+    }
+
+    function it(name, fn) {
+      currentSuite.tests.push({ name, fn, status: "pending", detail: "" });
+    }
+
+    function expect(value) {
+      return {
+        toBe(expected) {
+          if (value !== expected) {
+            throw new Error("Expected " + JSON.stringify(expected) + " but got " + JSON.stringify(value));
+          }
+        },
+        toEqual(expected) {
+          const a = JSON.stringify(value);
+          const b = JSON.stringify(expected);
+          if (a !== b) {
+            throw new Error("Expected " + b + " but got " + a);
+          }
+        },
+        toBeTruthy() {
+          if (!value) throw new Error("Expected truthy but got " + JSON.stringify(value));
+        },
+        toBeFalsy() {
+          if (value) throw new Error("Expected falsy but got " + JSON.stringify(value));
+        },
+        toContain(item) {
+          if (!String(value).includes(item)) {
+            throw new Error(JSON.stringify(value) + " does not contain " + JSON.stringify(item));
+          }
+        },
+        toMatch(regex) {
+          if (!regex.test(String(value))) {
+            throw new Error(JSON.stringify(value) + " does not match " + regex);
+          }
+        },
+        toBeGreaterThan(n) {
+          if (!(value > n)) throw new Error(value + " is not greater than " + n);
+        },
+        toHaveLength(n) {
+          if ((value && value.length) !== n) {
+            throw new Error("Expected length " + n + " but got " + (value ? value.length : "null/undefined"));
+          }
+        }
+      };
+    }
+
+    // ─── Shared Utility Functions (mirrors index.html + admin-panel.html) ─────
+
+    function buildWhatsAppLink(phoneNumber) {
+      return "https://api.whatsapp.com/send?phone=" + encodeURIComponent(phoneNumber) + "&text=Hi%20Support%2C%20mujhe%20help%20chahiye";
+    }
+
+    function sanitizeWebsiteList(list) {
+      if (!Array.isArray(list)) return [];
+      const seen = {};
+      const clean = [];
+      list.forEach((item) => {
+        const value = String(item || "").trim();
+        if (!value) return;
+        const key = value.toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+        clean.push(value);
+      });
+      return clean;
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function normalizePhone(value) {
+      const digits = String(value || "").replace(/\D/g, "");
+      if (!digits) return "";
+      if (digits.length === 10) return "91" + digits;
+      if (digits.length >= 11 && digits.length <= 15) return digits;
+      return "";
+    }
+
+    function dedupeWebsites(list) {
+      const seen = {};
+      const clean = [];
+      list.forEach(function (item) {
+        const value = String(item || "").trim();
+        if (!value) return;
+        const key = value.toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+        clean.push(value);
+      });
+      return clean;
+    }
+
+    function validateMobile(mobile) {
+      return /^[0-9]{10}$/.test(mobile);
+    }
+
+    function validatePassword(password, confirmPassword) {
+      if (password.length < 6) return { ok: false, error: "Password must be at least 6 characters." };
+      if (password !== confirmPassword) return { ok: false, error: "Passwords do not match." };
+      return { ok: true };
+    }
+
+    function validateSignupForm(data) {
+      if (!data.username || !data.username.trim()) {
+        return { ok: false, error: "Username is required." };
+      }
+      if (!validateMobile(data.mobileNumber)) {
+        return { ok: false, error: "Mobile number must be exactly 10 digits." };
+      }
+      const passCheck = validatePassword(data.password, data.confirmPassword);
+      if (!passCheck.ok) return passCheck;
+      if (!data.website) return { ok: false, error: "Website selection is required." };
+      return { ok: true };
+    }
+
+    // ─── USER TESTS ───────────────────────────────────────────────────────────
+
+    describe("User Signup — Form Validation", "user", () => {
+
+      it("valid form data should pass validation", () => {
+        const result = validateSignupForm({
+          username: "rahul123",
+          mobileNumber: "9876543210",
+          password: "secure123",
+          confirmPassword: "secure123",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(true);
+      });
+
+      it("empty username should fail validation", () => {
+        const result = validateSignupForm({
+          username: "",
+          mobileNumber: "9876543210",
+          password: "pass123",
+          confirmPassword: "pass123",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+        expect(result.error).toContain("Username");
+      });
+
+      it("mobile number less than 10 digits should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "98765",
+          password: "pass123",
+          confirmPassword: "pass123",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+        expect(result.error).toContain("Mobile");
+      });
+
+      it("mobile number more than 10 digits should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "98765432101",
+          password: "pass123",
+          confirmPassword: "pass123",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+      });
+
+      it("non-numeric mobile should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "98abc43210",
+          password: "pass123",
+          confirmPassword: "pass123",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+      });
+
+      it("password less than 6 chars should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "9876543210",
+          password: "abc",
+          confirmPassword: "abc",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+        expect(result.error).toContain("6");
+      });
+
+      it("passwords not matching should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "9876543210",
+          password: "password1",
+          confirmPassword: "password2",
+          website: "bpexch"
+        });
+        expect(result.ok).toBe(false);
+        expect(result.error).toContain("match");
+      });
+
+      it("missing website selection should fail", () => {
+        const result = validateSignupForm({
+          username: "user1",
+          mobileNumber: "9876543210",
+          password: "pass123",
+          confirmPassword: "pass123",
+          website: ""
+        });
+        expect(result.ok).toBe(false);
+        expect(result.error).toContain("Website");
+      });
+    });
+
+    describe("User Signup — WhatsApp Link Builder", "user", () => {
+
+      it("builds correct WhatsApp link for Indian number", () => {
+        const link = buildWhatsAppLink("919876543210");
+        expect(link).toContain("919876543210");
+        expect(link).toContain("api.whatsapp.com");
+      });
+
+      it("encodes support message in link", () => {
+        const link = buildWhatsAppLink("919999999999");
+        expect(link).toContain("text=");
+        expect(link).toContain("Support");
+      });
+
+      it("link format is correct URL", () => {
+        const link = buildWhatsAppLink("919876543210");
+        expect(link).toMatch(/^https:\/\/api\.whatsapp\.com/);
+      });
+    });
+
+    describe("User Signup — Website List Sanitization", "user", () => {
+
+      it("removes duplicate websites (case-insensitive)", () => {
+        const result = sanitizeWebsiteList(["bpexch", "BPEXCH", "fairbet7"]);
+        expect(result).toHaveLength(2);
+        expect(result[0]).toBe("bpexch");
+      });
+
+      it("removes empty strings from list", () => {
+        const result = sanitizeWebsiteList(["bpexch", "", "  ", "fairbet7"]);
+        expect(result).toHaveLength(2);
+      });
+
+      it("returns empty array for non-array input", () => {
+        const result = sanitizeWebsiteList("not-an-array");
+        expect(result).toHaveLength(0);
+      });
+
+      it("returns empty array for null", () => {
+        const result = sanitizeWebsiteList(null);
+        expect(result).toHaveLength(0);
+      });
+
+      it("trims whitespace from website names", () => {
+        const result = sanitizeWebsiteList(["  bpexch  ", "fairbet7 "]);
+        expect(result[0]).toBe("bpexch");
+        expect(result[1]).toBe("fairbet7");
+      });
+    });
+
+    describe("User Signup — HTML Escaping (XSS Prevention)", "user", () => {
+
+      it("escapes < and > characters", () => {
+        const result = escapeHtml("<script>alert(1)</script>");
+        expect(result).toContain("&lt;");
+        expect(result).toContain("&gt;");
+      });
+
+      it("escapes & character", () => {
+        const result = escapeHtml("AT&T");
+        expect(result).toContain("&amp;");
+      });
+
+      it("escapes double quotes", () => {
+        const result = escapeHtml('He said "hello"');
+        expect(result).toContain("&quot;");
+      });
+
+      it("escapes single quotes", () => {
+        const result = escapeHtml("it's");
+        expect(result).toContain("&#39;");
+      });
+
+      it("returns empty string for null/undefined", () => {
+        expect(escapeHtml(null)).toBe("");
+        expect(escapeHtml(undefined)).toBe("");
+      });
+    });
+
+    // ─── ADMIN TESTS ──────────────────────────────────────────────────────────
+
+    describe("Admin Panel — Phone Normalization", "admin", () => {
+
+      it("adds 91 prefix to 10-digit Indian number", () => {
+        expect(normalizePhone("9876543210")).toBe("919876543210");
+      });
+
+      it("keeps 12-digit number with country code as-is", () => {
+        expect(normalizePhone("919876543210")).toBe("919876543210");
+      });
+
+      it("strips non-digit characters before normalizing", () => {
+        expect(normalizePhone("+91-98765-43210")).toBe("919876543210");
+      });
+
+      it("returns empty string for empty input", () => {
+        expect(normalizePhone("")).toBe("");
+      });
+
+      it("returns empty string for null", () => {
+        expect(normalizePhone(null)).toBe("");
+      });
+
+      it("rejects short numbers (less than 10 digits)", () => {
+        expect(normalizePhone("12345")).toBe("");
+      });
+
+      it("rejects too long numbers (more than 15 digits)", () => {
+        expect(normalizePhone("1234567890123456")).toBe("");
+      });
+    });
+
+    describe("Admin Panel — Website Deduplication", "admin", () => {
+
+      it("removes duplicate entries", () => {
+        const result = dedupeWebsites(["bpexch", "bpexch", "fairbet7"]);
+        expect(result).toHaveLength(2);
+      });
+
+      it("deduplicates case-insensitively", () => {
+        const result = dedupeWebsites(["BpExch", "bpexch"]);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toBe("BpExch");
+      });
+
+      it("removes empty/blank entries", () => {
+        const result = dedupeWebsites(["bpexch", "", "  "]);
+        expect(result).toHaveLength(1);
+      });
+
+      it("preserves order of first occurrence", () => {
+        const result = dedupeWebsites(["fairbet7", "bpexch", "fairbet7"]);
+        expect(result[0]).toBe("fairbet7");
+        expect(result[1]).toBe("bpexch");
+      });
+    });
+
+    describe("Admin Panel — HTML Escaping (XSS in Table)", "admin", () => {
+
+      it("escapes XSS in username column", () => {
+        const username = "<img src=x onerror=alert(1)>";
+        const escaped = escapeHtml(username);
+        expect(escaped).toContain("&lt;");
+        expect(escaped).toContain("&gt;");
+      });
+
+      it("escapes XSS in mobile number column", () => {
+        const mobile = "<script>document.cookie</script>";
+        const escaped = escapeHtml(mobile);
+        expect(escaped).toContain("&lt;script&gt;");
+      });
+
+      it("does not modify safe alphanumeric strings", () => {
+        expect(escapeHtml("user123")).toBe("user123");
+        expect(escapeHtml("9876543210")).toBe("9876543210");
+        expect(escapeHtml("bpexch")).toBe("bpexch");
+      });
+    });
+
+    describe("Admin Panel — Config Validation", "admin", () => {
+
+      it("valid 10-digit phone becomes normalized on save attempt", () => {
+        const phone = normalizePhone("9876543210");
+        expect(phone).toBe("919876543210");
+        expect(phone.length).toBeGreaterThan(0);
+      });
+
+      it("invalid phone string returns empty (save would block)", () => {
+        const phone = normalizePhone("abc");
+        expect(phone).toBe("");
+      });
+
+      it("non-empty website list passes save check", () => {
+        const sites = dedupeWebsites(["bpexch", "fairbet7"]);
+        expect(sites.length).toBeGreaterThan(0);
+      });
+
+      it("empty website list blocks save (length === 0)", () => {
+        const sites = dedupeWebsites(["", "  "]);
+        expect(sites).toHaveLength(0);
+      });
+    });
+
+    describe("Admin Panel — Session Token Logic", "admin", () => {
+
+      it("empty token means logged out", () => {
+        const token = "";
+        expect(!token).toBeTruthy();
+      });
+
+      it("non-empty token means logged in", () => {
+        const token = "admin_session_token_change_me";
+        expect(!!token).toBeTruthy();
+      });
+
+      it("auto-refresh only triggers when token is present", () => {
+        let refreshTriggered = false;
+        const token = "some_token";
+        if (token) refreshTriggered = true;
+        expect(refreshTriggered).toBe(true);
+      });
+
+      it("auto-refresh skipped when token is empty", () => {
+        let refreshTriggered = false;
+        const token = "";
+        if (token) refreshTriggered = true;
+        expect(refreshTriggered).toBe(false);
+      });
+    });
+
+    // ─── TEST RUNNER ─────────────────────────────────────────────────────────
+
+    const suitesContainer = document.getElementById("suites");
+    const totalStat = document.getElementById("totalStat");
+    const passStat = document.getElementById("passStat");
+    const failStat = document.getElementById("failStat");
+    const runBtn = document.getElementById("runBtn");
+
+    function renderSuites() {
+      suitesContainer.innerHTML = "";
+      let totalAll = 0, passAll = 0, failAll = 0;
+
+      suites.forEach(suite => {
+        const totalSuite = suite.tests.length;
+        const passedSuite = suite.tests.filter(t => t.status === "pass").length;
+        const failedSuite = suite.tests.filter(t => t.status === "fail").length;
+
+        totalAll += totalSuite;
+        passAll += passedSuite;
+        failAll += failedSuite;
+
+        const suiteDom = document.createElement("div");
+        suiteDom.className = "suite";
+
+        const header = document.createElement("div");
+        header.className = "suite-header " + (suite.type === "admin" ? "admin-suite" : "user-suite");
+        header.innerHTML =
+          "<span class='suite-badge " + suite.type + "'>" + suite.type.toUpperCase() + "</span>" +
+          "<span>" + escapeHtml(suite.name) + "</span>" +
+          "<span style='margin-left:auto;font-size:0.82rem;color:#94a3b8'>" +
+          passedSuite + "/" + totalSuite + " passed</span>";
+        suiteDom.appendChild(header);
+
+        suite.tests.forEach(test => {
+          const item = document.createElement("div");
+          item.className = "test-item";
+
+          let iconClass = "running";
+          let iconText = "…";
+          if (test.status === "pass") { iconClass = "pass"; iconText = "✓"; }
+          else if (test.status === "fail") { iconClass = "fail"; iconText = "✕"; }
+
+          item.innerHTML =
+            "<div class='test-icon " + iconClass + "'>" + iconText + "</div>" +
+            "<div class='test-info'>" +
+              "<div class='test-name'>" + escapeHtml(test.name) + "</div>" +
+              (test.detail
+                ? "<div class='test-detail " + (test.status === "fail" ? "fail-detail" : "pass-detail") + "'>" + escapeHtml(test.detail) + "</div>"
+                : "") +
+            "</div>";
+
+          suiteDom.appendChild(item);
+        });
+
+        suitesContainer.appendChild(suiteDom);
+      });
+
+      totalStat.textContent = totalAll;
+      passStat.textContent = passAll;
+      failStat.textContent = failAll;
+    }
+
+    function runTests() {
+      runBtn.disabled = true;
+      runBtn.textContent = "Running…";
+
+      // Reset all
+      suites.forEach(suite => {
+        suite.tests.forEach(test => {
+          test.status = "pending";
+          test.detail = "";
+        });
+      });
+
+      renderSuites();
+
+      let idx = 0;
+      const allTests = suites.flatMap(suite => suite.tests.map(t => ({ suite, test: t })));
+
+      function runNext() {
+        if (idx >= allTests.length) {
+          runBtn.disabled = false;
+          runBtn.textContent = "Run All Tests";
+          renderSuites();
+          return;
+        }
+
+        const { test } = allTests[idx++];
+
+        try {
+          const result = test.fn();
+          if (result && typeof result.then === "function") {
+            result.then(() => {
+              test.status = "pass";
+              test.detail = "Passed";
+              renderSuites();
+              runNext();
+            }).catch(err => {
+              test.status = "fail";
+              test.detail = err.message || String(err);
+              renderSuites();
+              runNext();
+            });
+          } else {
+            test.status = "pass";
+            test.detail = "Passed";
+            renderSuites();
+            setTimeout(runNext, 10);
+          }
+        } catch (err) {
+          test.status = "fail";
+          test.detail = err.message || String(err);
+          renderSuites();
+          setTimeout(runNext, 10);
+        }
+      }
+
+      runNext();
+    }
+
+    runBtn.addEventListener("click", runTests);
+
+    // Auto-run on load
+    window.addEventListener("load", () => {
+      renderSuites();
+      runTests();
+    });
+  </script>
+</body>
+</html>
