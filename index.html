@@ -383,7 +383,25 @@
   </div>
 
   <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSIR3ku5ibTVSvLBQH6hy0fWw/exec";
+    const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1991Bnzg1nLskOVXy6ZCjxs--WS9lmhgmkyGOj6hIbl67WEHRVsCpcLlsjImuFTH9/exec";
+    const SCRIPT_URL_KEY = "signup_script_url_override";
+    const LEGACY_SCRIPT_URLS = [
+      "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSlR3ku5ibTVSvLBQH6hy0fWw/exec",
+      "https://script.google.com/macros/s/AKfycbyLGECymHvBbbWumfwrcHJRmESrF-9PIJbJZf8DNO-cFoSIR3ku5ibTVSvLBQH6hy0fWw/exec",
+      "https://script.google.com/macros/s/AKfycbzyTiA4bjlRbQItfkgt8C1F84bN37yFw6L7yAK9uJ_8wpVgOUVVEnAD19xwp2fLBjXtug/exec"
+    ];
+    const storedScriptUrl = localStorage.getItem(SCRIPT_URL_KEY) || "";
+    const scriptUrlParam = new URLSearchParams(window.location.search).get("script_url");
+    if (scriptUrlParam) {
+      localStorage.setItem(SCRIPT_URL_KEY, scriptUrlParam);
+    } else if (LEGACY_SCRIPT_URLS.includes(storedScriptUrl)) {
+      localStorage.removeItem(SCRIPT_URL_KEY);
+    }
+    const GOOGLE_SCRIPT_URL =
+      scriptUrlParam ||
+      (LEGACY_SCRIPT_URLS.includes(storedScriptUrl) ? "" : storedScriptUrl) ||
+      DEFAULT_SCRIPT_URL;
+
     const DEFAULT_WEBSITES = ["bpexch"];
     const DEFAULT_HELPLINE = "919999999999";
 
@@ -443,31 +461,22 @@
       }).join("");
     }
 
-    function gasGet(params) {
-      return new Promise(function (resolve, reject) {
-        var cb = "_gc" + Date.now().toString(36) + Math.random().toString(36).slice(2);
-        var timer = setTimeout(function () { cleanup(); reject(new Error("timeout")); }, 10000);
-        var el;
-        function cleanup() { clearTimeout(timer); delete window[cb]; if (el && el.parentNode) el.parentNode.removeChild(el); }
-        window[cb] = function (data) { cleanup(); resolve(data); };
-        var qs = Object.keys(params).map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); }).join("&");
-        el = document.createElement("script");
-        el.src = GOOGLE_SCRIPT_URL + "?" + qs + "&callback=" + cb + "&_t=" + Date.now();
-        el.onerror = function () { cleanup(); reject(new Error("failed")); };
-        document.head.appendChild(el);
-      });
-    }
-
     async function loadPublicConfig() {
       renderWebsites(DEFAULT_WEBSITES);
       whatsappSupportBtn.href = buildWhatsAppLink(DEFAULT_HELPLINE);
 
       try {
-        const data = await gasGet({ action: "config" });
-        if (!data || !data.ok) return;
+        const response = await fetch(GOOGLE_SCRIPT_URL + "?action=config&_t=" + Date.now(), { method: "GET" });
+        const data = await response.json();
+        if (!data || !data.ok) {
+          return;
+        }
+
         renderWebsites(data.websites || DEFAULT_WEBSITES);
         const helpline = String(data.whatsappHelpline || "").replace(/\D/g, "");
-        if (helpline) whatsappSupportBtn.href = buildWhatsAppLink(helpline);
+        if (helpline) {
+          whatsappSupportBtn.href = buildWhatsAppLink(helpline);
+        }
       } catch (error) {
         // Defaults already set above.
       }
@@ -513,6 +522,8 @@
         successModal.classList.add("show");
         successModal.setAttribute("aria-hidden", "false");
         form.reset();
+        renderWebsites(DEFAULT_WEBSITES);
+        await loadPublicConfig();
       } catch (error) {
         errorText.textContent = "Signup save nahi hua. Dobara try karein.";
       } finally {
