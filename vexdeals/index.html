@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VexDeals – Best Deals Online</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+      <span class="logo-vex">Vex</span><span class="logo-deals">Deals</span>
+      <span class="logo-tag">⚡</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="products.html" class="nav-link">Products</a>
+      <a href="products.html?cat=electronics" class="nav-link">Electronics</a>
+      <a href="products.html?cat=fashion" class="nav-link">Fashion</a>
+      <a href="products.html?cat=home" class="nav-link">Home & Living</a>
+    </div>
+    <div class="nav-actions">
+      <div class="search-box">
+        <input type="text" placeholder="Search deals..." id="searchInput" />
+        <button class="search-btn" onclick="doSearch()"><i class="fas fa-search"></i></button>
+      </div>
+      <a href="cart.html" class="cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <a href="login.html" class="btn-login">Login</a>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge animate-in" style="animation-delay:0.1s">🔥 Limited Time Deals</div>
+    <h1 class="hero-title animate-in" style="animation-delay:0.2s">
+      Shop Smart.<br/>
+      <span class="gradient-text">Save Bigger.</span>
+    </h1>
+    <p class="hero-sub animate-in" style="animation-delay:0.3s">
+      Discover thousands of products at unbeatable prices. Fresh deals every hour.
+    </p>
+    <div class="hero-btns animate-in" style="animation-delay:0.4s">
+      <a href="products.html" class="btn-primary">
+        Shop Now <i class="fas fa-arrow-right"></i>
+      </a>
+      <a href="products.html?cat=deals" class="btn-ghost">
+        Today's Deals
+      </a>
+    </div>
+    <div class="hero-stats animate-in" style="animation-delay:0.5s">
+      <div class="stat"><span class="stat-num" data-target="50000">0</span><span>+</span><p>Products</p></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num" data-target="200000">0</span><span>+</span><p>Customers</p></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num" data-target="99">0</span><span>%</span><p>Satisfaction</p></div>
+    </div>
+  </div>
+  <div class="hero-visual animate-in" style="animation-delay:0.3s">
+    <div class="product-showcase">
+      <div class="showcase-card sc1">
+        <div class="sc-img">📱</div>
+        <div class="sc-info">
+          <p>iPhone 15 Pro</p>
+          <span>₹89,999</span>
+        </div>
+        <div class="sc-badge">-20%</div>
+      </div>
+      <div class="showcase-card sc2">
+        <div class="sc-img">💻</div>
+        <div class="sc-info">
+          <p>MacBook Air M3</p>
+          <span>₹1,14,999</span>
+        </div>
+        <div class="sc-badge">-15%</div>
+      </div>
+      <div class="showcase-card sc3">
+        <div class="sc-img">🎧</div>
+        <div class="sc-info">
+          <p>AirPods Pro</p>
+          <span>₹24,900</span>
+        </div>
+        <div class="sc-badge">-30%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>⚡ Flash Sale Live Now</span>
+    <span>🚚 Free Delivery on orders above ₹499</span>
+    <span>🔥 Up to 70% OFF on Electronics</span>
+    <span>🎁 Buy 2 Get 1 Free on Fashion</span>
+    <span>💳 Extra 10% off with VexPay</span>
+    <span>⚡ Flash Sale Live Now</span>
+    <span>🚚 Free Delivery on orders above ₹499</span>
+    <span>🔥 Up to 70% OFF on Electronics</span>
+    <span>🎁 Buy 2 Get 1 Free on Fashion</span>
+    <span>💳 Extra 10% off with VexPay</span>
+  </div>
+</div>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section categories-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Shop by <span class="gradient-text">Category</span></h2>
+      <p>Find exactly what you're looking for</p>
+    </div>
+    <div class="categories-grid">
+      <a href="products.html?cat=electronics" class="category-card" style="--cat-color:#6C63FF">
+        <div class="cat-icon">📱</div>
+        <h3>Electronics</h3>
+        <p>1,200+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      <a href="products.html?cat=fashion" class="category-card" style="--cat-color:#FF6584">
+        <div class="cat-icon">👗</div>
+        <h3>Fashion</h3>
+        <p>3,500+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      <a href="products.html?cat=home" class="category-card" style="--cat-color:#43E97B">
+        <div class="cat-icon">🛋️</div>
+        <h3>Home & Living</h3>
+        <p>890+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      <a href="products.html?cat=beauty" class="category-card" style="--cat-color:#F9CA24">
+        <div class="cat-icon">💄</div>
+        <h3>Beauty</h3>
+        <p>650+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      <a href="products.html?cat=sports" class="category-card" style="--cat-color:#00B4D8">
+        <div class="cat-icon">⚽</div>
+        <h3>Sports</h3>
+        <p>420+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+      <a href="products.html?cat=books" class="category-card" style="--cat-color:#FD7E14">
+        <div class="cat-icon">📚</div>
+        <h3>Books</h3>
+        <p>2,100+ items</p>
+        <div class="cat-arrow"><i class="fas fa-arrow-right"></i></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED PRODUCTS ===== -->
+<section class="section products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>🔥 <span class="gradient-text">Hot Deals</span> Today</h2>
+      <p>Grab them before they're gone!</p>
+      <div class="countdown" id="countdown">
+        Ends in: <span id="hours">08</span>:<span id="minutes">23</span>:<span id="seconds">45</span>
+      </div>
+    </div>
+    <div class="products-grid" id="featuredProducts"></div>
+    <div class="view-all-wrap">
+      <a href="products.html" class="btn-primary">View All Products <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BANNER ===== -->
+<section class="promo-banner">
+  <div class="container">
+    <div class="banner-grid">
+      <div class="banner-card b1">
+        <div class="banner-content">
+          <span class="banner-tag">Electronics Sale</span>
+          <h3>Up to <span>70% OFF</span></h3>
+          <p>On top brands like Apple, Samsung & more</p>
+          <a href="products.html?cat=electronics" class="btn-banner">Shop Now</a>
+        </div>
+        <div class="banner-img">💻</div>
+      </div>
+      <div class="banner-card b2">
+        <div class="banner-content">
+          <span class="banner-tag">Fashion Week</span>
+          <h3>New Arrivals <span>2024</span></h3>
+          <p>Trending styles at amazing prices</p>
+          <a href="products.html?cat=fashion" class="btn-banner">Explore</a>
+        </div>
+        <div class="banner-img">👗</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEW ARRIVALS ===== -->
+<section class="section products-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>✨ <span class="gradient-text">New Arrivals</span></h2>
+      <p>Fresh products just landed</p>
+    </div>
+    <div class="products-grid" id="newArrivals"></div>
+  </div>
+</section>
+
+<!-- ===== WHY VEXDEALS ===== -->
+<section class="section features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Why <span class="gradient-text">VexDeals</span>?</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3>Lightning Fast Delivery</h3>
+        <p>Same-day delivery in 50+ cities. Get your orders in hours, not days.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>100% Secure Payments</h3>
+        <p>All transactions encrypted with bank-grade security. Shop worry-free.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">↩️</div>
+        <h3>Easy Returns</h3>
+        <p>Not satisfied? Return within 30 days, no questions asked.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Best Price Guarantee</h3>
+        <p>Found it cheaper elsewhere? We'll match the price. Always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-card">
+      <div class="nl-left">
+        <span class="nl-badge">Newsletter</span>
+        <h2>Get <span class="gradient-text">Exclusive Deals</span> in Your Inbox</h2>
+        <p>Join 2,00,000+ smart shoppers. Unsubscribe anytime.</p>
+      </div>
+      <div class="nl-form">
+        <input type="email" placeholder="Enter your email address" id="nlEmail" />
+        <button class="btn-primary" onclick="subscribeNewsletter()">
+          Subscribe <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-vex">Vex</span><span class="logo-deals">Deals</span> ⚡</div>
+        <p>Your one-stop destination for the best deals online. Shop smart, save big.</p>
+        <div class="social-links">
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="#">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="products.html?cat=electronics">Electronics</a></li>
+          <li><a href="products.html?cat=fashion">Fashion</a></li>
+          <li><a href="products.html?cat=home">Home & Living</a></li>
+          <li><a href="products.html?cat=beauty">Beauty</a></li>
+          <li><a href="products.html?cat=sports">Sports</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 VexDeals. All rights reserved. Made with ❤️</p>
+      <div class="payment-icons">
+        <span>💳 Visa</span>
+        <span>💳 Mastercard</span>
+        <span>📱 UPI</span>
+        <span>🏦 NetBanking</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== CART SIDEBAR ===== -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>🛒 Your Cart (<span id="cartItemCount">0</span>)</h3>
+    <button onclick="closeCart()" class="close-btn"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">
+      <div class="empty-icon">🛒</div>
+      <p>Your cart is empty</p>
+      <a href="products.html" class="btn-primary">Start Shopping</a>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>Total:</span>
+      <span class="total-price" id="cartTotal">₹0</span>
+    </div>
+    <a href="cart.html" class="btn-primary" style="width:100%;text-align:center">Proceed to Checkout</a>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  // Override cart button to open sidebar
+  document.querySelector('.cart-btn').addEventListener('click', function(e){
+    e.preventDefault();
+    openCart();
+  });
+</script>
+</body>
+</html>
